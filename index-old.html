@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="hy">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Հեռախոսի պահեստամասերի խանութ — նախագիծ 3.7 × 5 մ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Armenian:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eceef0; --panel:#ffffff; --ink:#1e2226; --muted:#5d6670; --line:#c7cdd3;
+  --red:#c41e1e; --staff:#e7eef6; --cust:#fbf3e6; --furn:#ffffff; --furn-edge:#2a3036;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#15181b; --panel:#1e2226; --ink:#e8eaed; --muted:#9aa3ab; --line:#39414a;
+    --staff:#1f2c3a; --cust:#33291b; --furn:#2b3137; --furn-edge:#cfd5db;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15181b; --panel:#1e2226; --ink:#e8eaed; --muted:#9aa3ab; --line:#39414a;
+  --staff:#1f2c3a; --cust:#33291b; --furn:#2b3137; --furn-edge:#cfd5db;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans Armenian",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.55}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 60px}
+h1{font-size:clamp(1.5rem,3.4vw,2.3rem);line-height:1.15;margin:0 0 6px;font-weight:700}
+h1 .dim{color:var(--red)}
+.lead{color:var(--muted);max-width:68ch;margin:0 0 22px}
+h2{font-size:1.2rem;margin:36px 0 12px;font-weight:700}
+.viewer{position:relative;background:#0e1114;border-radius:6px;overflow:hidden;aspect-ratio:16/10;min-height:340px}
+.viewer canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+.hint{position:absolute;left:12px;bottom:10px;color:#cfd5db;font-size:.8rem;background:rgba(0,0,0,.45);padding:4px 9px;border-radius:4px;pointer-events:none}
+.views{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.views button{font:inherit;font-size:.92rem;border:1px solid var(--line);background:var(--panel);color:var(--ink);
+  padding:8px 14px;border-radius:4px;cursor:pointer}
+.views button[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}
+.views button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:1fr}}
+.plan{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px;overflow-x:auto}
+.plan svg{display:block;width:100%;min-width:520px;height:auto}
+.specs{background:var(--panel);border:1px solid var(--line);border-radius:6px;overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:700;background:transparent}
+td.n{white-space:nowrap;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+.notes{max-width:72ch}
+.notes p{margin:0 0 10px}
+.key{display:flex;gap:16px;flex-wrap:wrap;font-size:.85rem;color:var(--muted);margin:10px 4px 2px}
+.key span::before{content:"";display:inline-block;width:12px;height:12px;border:1px solid var(--furn-edge);margin-right:6px;vertical-align:-1px}
+.key .k1::before{background:var(--cust)} .key .k2::before{background:var(--staff)} .key .k3::before{background:var(--furn)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Պահեստամասերի խանութ <span class="dim">3.70 × 5.00 մ</span></h1>
+  <p class="lead">3D մոդել ճշգրիտ չափսերով։ Քաշեք մկնիկով կամ մատով՝ պտտելու համար, անիվով մոտեցրեք։ Ներքևի կոճակներով ընտրեք պատրաստի անկյուն։ Խոհանոցային օդաքարշը հանված է։</p>
+
+  <div class="viewer" id="viewer">
+    <div class="hint">Քաշեք՝ պտտելու, անիվ/երկու մատ՝ մոտեցնելու</div>
+  </div>
+  <div class="views" id="views" role="group" aria-label="Տեսանկյուններ"></div>
+
+  <div class="grid">
+    <div>
+      <h2>Հատակագիծ չափսերով (մետր)</h2>
+      <div class="plan" id="plan"></div>
+      <div class="key"><span class="k1">Հաճախորդի գոտի</span><span class="k2">Աշխատողի գոտի</span><span class="k3">Կահույք</span></div>
+    </div>
+    <div>
+      <h2>Կահույքի չափսեր</h2>
+      <div class="specs">
+        <table>
+          <thead><tr><th>Տարր</th><th>Երկ. × խոր. × բարձր.</th></tr></thead>
+          <tbody>
+            <tr><td>Ձախ ստենդ (պատի մոտ)</td><td class="n">2.80 × 0.40 × 2.20</td></tr>
+            <tr><td>— որից հեռախոսի վիտրինա</td><td class="n">1.00 × 0.40 × 2.20</td></tr>
+            <tr><td>Ձախ սեղան (առանց ապակու)</td><td class="n">2.80 × 0.55 × 0.95</td></tr>
+            <tr><td>Անցում ստենդի և սեղանի միջև</td><td class="n">0.70</td></tr>
+            <tr><td>Աջ ստենդ՝ ներքևը փակ պահեստ</td><td class="n">2.80 × 0.45 × 0.90</td></tr>
+            <tr><td>Աջ ստենդ՝ վերևը բաց դարակներ</td><td class="n">2.80 × 0.30 × մինչև 2.20</td></tr>
+            <tr><td>Գլխավոր սեղան՝ դրամարկղ</td><td class="n">1.40 × 0.60 × 0.95</td></tr>
+            <tr><td>Գլխավոր սեղան՝ վարպետի տեղ</td><td class="n">1.20 × 0.60, առջևի պատը 1.60</td></tr>
+            <tr><td>— վարպետի աշխատասեղանի մակերես</td><td class="n">բարձր. 0.80</td></tr>
+            <tr><td>Տեղ սեղանի հետևում (նստել, անցնել)</td><td class="n">1.00</td></tr>
+            <tr><td>Հաճախորդի անցում մեջտեղում</td><td class="n">1.60</td></tr>
+            <tr><td>Հետևի պատի դարակներ (ըստ ցանկության)</td><td class="n">2.40 × 0.25, 1.30–2.20</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <h2>Ինչպես է աշխատում տարածքը</h2>
+  <div class="notes">
+    <p>Աշխատողը մտնում է ձախ կողմից՝ 0.70 մ անցումով ստենդի և ձախ սեղանի միջև, ապա շարունակում է գլխավոր սեղանի հետևը։ Խողովակը մնում է այդ անցման վերջում՝ կահույքը դրա վրա չի դրված։</p>
+    <p>Գլխավոր սեղանը զբաղեցնում է ամբողջ լայնքը ձախ անցումից մինչև աջ պատը՝ 2.60 մ։ Ձախում 1.40 մ դրամարկղն է 0.95 մ բարձրությամբ, աջում 1.20 մ վարպետի տեղն է, որի առջևի պատը 1.60 մ է և փակում է աշխատանքը հաճախորդից։</p>
+    <p>Աջ ստենդը հասնում է մինչև գլխավոր սեղանը։ Ներքևում փակ դռներով պահեստ է, վերևում բաց դարակներ, ոչ մի տեղ ապակի չկա։ Ձախ վիտրինան միայն հեռախոսների համար է և դրված է վիտրինայի մոտ, որ փողոցից երևա։</p>
+    <p>Ենթադրություններ՝ 3.70 մ-ը ապակե ճակատի լայնքն է, 5.00 մ-ը՝ խորությունը, առաստաղը մոտ 3.00 մ, դուռը մոտ 0.80 մ՝ լուսանկարի համաձայն։ Եթե որևէ մեկը տարբեր է, կուղղեմ։</p>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ---------- Shared dimensions (meters). x: left wall → right wall. d: front glass → back wall ---------- */
+const W=3.70, D=5.00, H=3.00;
+const L = {
+  standL:{x0:0,x1:0.40,d0:0.60,d1:3.40,h:2.20}, vitrine:{d0:0.60,d1:1.60},
+  deskL:{x0:1.10,x1:1.65,d0:0.60,d1:3.40,h:0.95},
+  standR:{x0:3.25,x1:3.70,d0:0.60,d1:3.40,hLow:0.90,shelfX0:3.40,h:2.20},
+  cash:{x0:1.10,x1:2.50,d0:3.40,d1:4.00,h:0.95},
+  repair:{x0:2.50,x1:3.70,d0:3.40,d1:4.00,panel:1.60,top:0.80},
+  backShelf:{x0:1.20,x1:3.60,d0:4.75,d1:5.00,y0:1.30,y1:2.20},
+  door:{x0:1.55,x1:2.35},
+  pipe:{x:0.28}
+};
+
+/* ---------- Floor plan (SVG) ---------- */
+(function plan(){
+  const s=110, M=78, Wpx=W*s+M*2, Hpx=D*s+M*2;
+  const X=x=>M+x*s, Y=d=>M+(D-d)*s;
+  let o=`<svg viewBox="0 0 ${Wpx} ${Hpx}" xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans Armenian, system-ui, sans-serif" role="img" aria-label="Հատակագիծ">`;
+  o+=`<defs><marker id="t" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M5 0V10" stroke="var(--ink)" stroke-width="1.6"/></marker></defs>`;
+  const rect=(x0,x1,d0,d1,fill,label,sub)=>{
+    o+=`<rect x="${X(x0)}" y="${Y(d1)}" width="${(x1-x0)*s}" height="${(d1-d0)*s}" fill="${fill}" stroke="var(--furn-edge)" stroke-width="1.4"/>`;
+    if(label){const cx=X((x0+x1)/2), cy=Y((d0+d1)/2); const vert=(x1-x0)<0.7;
+      o+=`<text x="${cx}" y="${cy}" font-size="12.5" font-weight="600" fill="var(--ink)" text-anchor="middle" dominant-baseline="middle" ${vert?`transform="rotate(-90 ${cx} ${cy})"`:''}>${label}</text>`;
+      if(sub) o+=`<text x="${cx}" y="${cy+15}" font-size="11" fill="var(--muted)" text-anchor="middle" ${vert?`transform="rotate(-90 ${cx} ${cy})" dy="0"`:''}>${sub}</text>`;}
+  };
+  const dimH=(x0,x1,d,txt,off=0)=>{const y=Y(d)+off;
+    o+=`<line x1="${X(x0)}" y1="${y}" x2="${X(x1)}" y2="${y}" stroke="var(--ink)" stroke-width="1" marker-start="url(#t)" marker-end="url(#t)"/>`;
+    o+=`<text x="${(X(x0)+X(x1))/2}" y="${y-5}" font-size="12" fill="var(--ink)" text-anchor="middle">${txt}</text>`;};
+  const dimV=(d0,d1,x,txt,off=0)=>{const xx=X(x)+off, y0=Y(d0), y1=Y(d1), cy=(y0+y1)/2;
+    o+=`<line x1="${xx}" y1="${y0}" x2="${xx}" y2="${y1}" stroke="var(--ink)" stroke-width="1" marker-start="url(#t)" marker-end="url(#t)"/>`;
+    o+=`<text x="${xx-6}" y="${cy}" font-size="12" fill="var(--ink)" text-anchor="middle" transform="rotate(-90 ${xx-6} ${cy})">${txt}</text>`;};
+
+  // zones
+  o+=`<rect x="${X(0)}" y="${Y(D)}" width="${W*s}" height="${D*s}" fill="var(--cust)"/>`;
+  o+=`<rect x="${X(0.40)}" y="${Y(3.40)}" width="${0.70*s}" height="${2.80*s}" fill="var(--staff)"/>`;
+  o+=`<rect x="${X(0)}" y="${Y(D)}" width="${W*s}" height="${1.00*s}" fill="var(--staff)"/>`;
+  o+=`<rect x="${X(0.40)}" y="${Y(4.00)}" width="${0.70*s}" height="${0.60*s}" fill="var(--staff)"/>`;
+  // walls
+  o+=`<path d="M${X(0)} ${Y(0)} V${Y(D)} H${X(W)} V${Y(0)}" fill="none" stroke="var(--ink)" stroke-width="6"/>`;
+  // glass front + door
+  o+=`<line x1="${X(0)}" y1="${Y(0)}" x2="${X(L.door.x0)}" y2="${Y(0)}" stroke="#4aa3d8" stroke-width="4"/>`;
+  o+=`<line x1="${X(L.door.x1)}" y1="${Y(0)}" x2="${X(W)}" y2="${Y(0)}" stroke="#4aa3d8" stroke-width="4"/>`;
+  const dr=(L.door.x1-L.door.x0)*s;
+  o+=`<path d="M${X(L.door.x1)} ${Y(0)} L${X(L.door.x1)} ${Y(0)+dr} A${dr} ${dr} 0 0 1 ${X(L.door.x0)} ${Y(0)}" fill="none" stroke="var(--muted)" stroke-width="1" stroke-dasharray="4 3"/>`;
+  o+=`<text x="${X((L.door.x0+L.door.x1)/2)}" y="${Y(0)+dr+16}" font-size="12" fill="var(--muted)" text-anchor="middle">Մուտք ~0.80</text>`;
+  // furniture
+  rect(0,0.40,1.60,3.40,'var(--furn)','Ստենդ 2.20 բարձր');
+  rect(0,0.40,0.60,1.60,'#f6d9d9','Վիտրինա');
+  rect(1.10,1.65,0.60,3.40,'var(--furn)','Սեղան, առանց ապակու');
+  rect(3.25,3.70,0.60,3.40,'var(--furn)','Դարակ + փակ պահեստ');
+  rect(1.10,2.50,3.40,4.00,'var(--furn)','Դրամարկղ','բարձր. 0.95');
+  rect(2.50,3.70,3.40,4.00,'#e4e7ea','Վարպետ','առջևը 1.60');
+  o+=`<line x1="${X(2.50)}" y1="${Y(3.40)}" x2="${X(3.70)}" y2="${Y(3.40)}" stroke="var(--red)" stroke-width="5"/>`;
+  rect(1.20,3.60,4.75,5.00,'none');
+  o+=`<text x="${X(2.4)}" y="${Y(4.875)+4}" font-size="10.5" fill="var(--muted)" text-anchor="middle">պատի դարակներ 1.30–2.20</text>`;
+  // stools
+  [[1.75,4.45],[3.10,4.45]].forEach(([x,d])=>o+=`<circle cx="${X(x)}" cy="${Y(d)}" r="${0.19*s}" fill="none" stroke="var(--muted)" stroke-width="1.2"/>`);
+  // pipe
+  o+=`<circle cx="${X(L.pipe.x)}" cy="${Y(4.93)}" r="6" fill="var(--red)"/><text x="${X(0.55)}" y="${Y(4.93)+4}" font-size="11" fill="var(--red)">խողովակ</text>`;
+  // walking arrow
+  o+=`<path d="M${X(0.75)} ${Y(0.7)} V${Y(4.35)} H${X(1.35)}" fill="none" stroke="var(--red)" stroke-width="1.6" stroke-dasharray="6 4"/>`;
+  o+=`<text x="${X(0.60)}" y="${Y(2.0)}" font-size="11" fill="var(--red)" transform="rotate(-90 ${X(0.60)} ${Y(2.0)})" text-anchor="middle">աշխատողի անցում 0.70</text>`;
+  o+=`<text x="${X(2.45)}" y="${Y(2.0)}" font-size="12" fill="var(--muted)" text-anchor="middle">հաճախորդ</text>`;
+  // dimensions — top
+  dimH(0,W,D,'3.70',-44);
+  dimH(0,0.40,D,'0.40',-20); dimH(0.40,1.10,D,'0.70',-20); dimH(1.10,2.50,D,'1.40',-20); dimH(2.50,3.70,D,'1.20',-20);
+  // dimensions — middle row
+  dimH(1.65,3.25,1.10,'1.60');
+  dimH(1.10,1.65,0.30,'0.55');
+  dimH(3.25,3.70,0.30,'0.45');
+  // dimensions — right side
+  dimV(0,D,W,'5.00',52);
+  dimV(0,0.60,W,'0.60',24); dimV(0.60,3.40,W,'2.80',24); dimV(3.40,4.00,W,'0.60',24); dimV(4.00,D,W,'1.00',24);
+  o+=`</svg>`;
+  document.getElementById('plan').innerHTML=o;
+})();
+
+/* ---------- 3D scene ---------- */
+(function scene(){
+  if(!window.THREE){document.getElementById('viewer').insertAdjacentHTML('beforeend','<p style="color:#fff;padding:20px">3D-ն չբեռնվեց։ Թարմացրեք էջը։</p>');return;}
+  const host=document.getElementById('viewer');
+  const renderer=new THREE.WebGLRenderer({antialias:true});
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+  renderer.outputEncoding=THREE.sRGBEncoding;
+  renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.05;
+  renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  host.prepend(renderer.domElement);
+  const scene=new THREE.Scene(); scene.background=new THREE.Color(0x0e1114);
+  const camera=new THREE.PerspectiveCamera(58,1,0.05,60);
+
+  let seed=7; const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646;};
+  const std=(c,r=0.6,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
+  const M_white=std(0xf2f2ef,0.55), M_top=std(0xe6e6e2,0.4), M_dark=std(0x23272b,0.5),
+        M_red=std(0xb81818,0.45), M_steel=std(0xb9bec3,0.3,0.6), M_wall=std(0xeeede8,0.9),
+        M_black=std(0x1d1f22,0.85), M_handle=std(0x9aa0a6,0.3,0.8), M_wood=std(0xd9d6cf,0.6);
+  const M_led=new THREE.MeshBasicMaterial({color:0xfff1d6});
+  const M_redGlow=new THREE.MeshStandardMaterial({color:0xd81c1c,emissive:0xa01010,emissiveIntensity:0.9,roughness:0.5});
+  const M_glass=new THREE.MeshStandardMaterial({color:0xcfe8f5,transparent:true,opacity:0.14,roughness:0.05,metalness:0.1,depthWrite:false});
+
+  // box by ranges: x (left→right), y (height), d (front→back)
+  function B(x0,x1,y0,y1,d0,d1,mat,shadow=true){
+    const m=new THREE.Mesh(new THREE.BoxGeometry(x1-x0,y1-y0,d1-d0),mat);
+    m.position.set((x0+x1)/2,(y0+y1)/2,-(d0+d1)/2);
+    if(shadow){m.castShadow=true;m.receiveShadow=true;}
+    scene.add(m);return m;
+  }
+  function plane(w,h,mat,pos,rotY=0,rotX=0){
+    const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h),mat);
+    m.position.set(...pos); m.rotation.y=rotY; m.rotation.x=rotX; m.receiveShadow=true; scene.add(m); return m;
+  }
+
+  // floor tiles texture (60×60 cm)
+  const cv=document.createElement('canvas');cv.width=cv.height=256;const g=cv.getContext('2d');
+  g.fillStyle='#d9dcdf';g.fillRect(0,0,256,256);g.strokeStyle='#b9bdc1';g.lineWidth=3;g.strokeRect(0,0,256,256);
+  const tex=new THREE.CanvasTexture(cv);tex.wrapS=tex.wrapT=THREE.RepeatWrapping;tex.repeat.set(W/0.6,D/0.6);tex.encoding=THREE.sRGBEncoding;
+  const floor=plane(W,D,new THREE.MeshStandardMaterial({map:tex,roughness:0.35,metalness:0.05}),[W/2,0,-D/2],0,-Math.PI/2);
+
+  // walls (visible only from inside)
+  const leftMat=std(0x1f2124,0.85); leftMat.side=THREE.FrontSide;
+  plane(D,H,leftMat,[0,H/2,-D/2],Math.PI/2);
+  plane(D,H,M_wall,[W,H/2,-D/2],-Math.PI/2);
+  plane(W,H,M_wall,[W/2,H/2,-D],0);
+  B(0.02,W-0.02,0.95,2.40,D-0.012,D-0.002,M_red,false);        // red accent on back wall
+  plane(W,D,M_wall,[W/2,H,-D/2],0,Math.PI/2);    // ceiling
+  // front: glass + frame + top band
+  const inFront=M_wall.clone(); plane(W,0.4,inFront,[W/2,2.8,0],Math.PI);
+  B(0,W,0,0.35,-0.02,0.0,std(0x9ea3a8,0.8));                       // stone plinth
+  const gl1=plane(L.door.x0,2.25,M_glass,[L.door.x0/2,1.475,0.0],0); gl1.material.side=THREE.DoubleSide;
+  const gl2=plane(W-L.door.x1,2.25,M_glass,[(W+L.door.x1)/2,1.475,0.0],0);
+  [0.02,L.door.x0,L.door.x1,W-0.02].forEach(x=>B(x-0.025,x+0.025,0,2.6,-0.03,0.0,M_dark));
+  B(0,W,2.58,2.62,-0.03,0.0,M_dark);
+
+  // product boxes (instanced)
+  const items=[]; const pal=[0xffffff,0xffffff,0xffffff,0xf4f4f4,0x2b50b8,0x1d3f99,0xf2c21b,0x1c1c1c,0xd32424,0xe8762b,0x3aa06a];
+  function fillAlongD(xa,xb,d0,d1,y,hmax){
+    let d=d0+0.02;
+    while(d<d1-0.06){
+      const w=0.07+rnd()*0.09, n=1+Math.floor(rnd()*3), c=pal[Math.floor(rnd()*pal.length)];
+      for(let i=0;i<n && d<d1-0.06;i++){
+        const h=Math.min(hmax-0.04,0.12+rnd()*0.16);
+        items.push([xa+0.02,xb-0.02,y,y+h,d,d+w,c]); d+=w+0.006;
+      }
+      if(rnd()<0.12) d+=0.05;
+    }
+  }
+  function fillAlongX(x0,x1,da,db,y,hmax,organizers){
+    let x=x0+0.02;
+    while(x<x1-0.06){
+      const w=organizers?0.26:0.07+rnd()*0.09;
+      const c=organizers?(rnd()<0.6?0x3a4a66:0x2a2e33):pal[Math.floor(rnd()*pal.length)];
+      const h=organizers?hmax-0.04:Math.min(hmax-0.04,0.12+rnd()*0.14);
+      items.push([x,x+w,y,y+h,da+0.02,db-0.02,c]); x+=w+0.01;
+    }
+  }
+
+  // ---- LEFT STAND (0.40 deep, 2.20 high) ----
+  const S=L.standL;
+  B(S.x0,S.x0+0.02,0,S.h,S.d0,S.d1,M_white);                   // back panel
+  B(S.x0,S.x1,0,0.08,S.d0,S.d1,M_dark);                         // plinth
+  [S.d0,1.60,2.50,S.d1].forEach(d=>B(S.x0,S.x1,0,S.h,d-0.009,d+0.009,M_white));
+  B(S.x0,S.x1,S.h-0.02,S.h,S.d0,S.d1,M_white);
+  const levelsL=[0.08,0.44,0.80,1.16,1.52,1.88];
+  levelsL.forEach(y=>{
+    B(S.x0,S.x1,y,y+0.02,1.60,S.d1,M_white);
+    B(S.x1-0.03,S.x1-0.01,y+0.33,y+0.34,1.60,S.d1,M_led,false);  // LED under next shelf
+    fillAlongD(0.03,0.36,1.61,2.49,y+0.02,0.34); fillAlongD(0.03,0.36,2.51,3.39,y+0.02,0.34);
+  });
+  // vitrine for phones (1.00 m), red backlit
+  B(0.02,0.035,0.30,2.18,L.vitrine.d0+0.01,L.vitrine.d1-0.01,M_redGlow,false);
+  B(S.x0,S.x1,0.08,0.30,L.vitrine.d0,L.vitrine.d1,M_white);
+  const vLev=[0.30,0.68,1.06,1.44,1.82];
+  vLev.forEach(y=>{
+    B(0.035,S.x1,y,y+0.015,L.vitrine.d0,L.vitrine.d1,std(0xfaf6f0,0.3));
+    B(0.035,S.x1-0.02,y+0.36,y+0.37,L.vitrine.d0,L.vitrine.d1,M_led,false);
+    for(let d=L.vitrine.d0+0.05; d<L.vitrine.d1-0.08; d+=0.105){
+      const c=[0x222326,0xe9e9e9,0x3a6ea5,0xbfa9d9,0x8c2d2d,0xd9c3a5][Math.floor(rnd()*6)];
+      const ph=B(0.16,0.175,y+0.05,y+0.215,d,d+0.075,std(c,0.25,0.3),false); ph.rotation.z=-0.12;
+    }
+  });
+  const vg=B(S.x1-0.006,S.x1,0.30,2.18,L.vitrine.d0+0.01,L.vitrine.d1-0.01,M_glass,false);
+
+  // ---- LEFT DESK (0.55 deep, 0.95 high, no glass) ----
+  const K=L.deskL;
+  B(K.x0+0.02,K.x1-0.02,0,0.08,K.d0,K.d1,M_dark);
+  B(K.x0,K.x1,0.08,0.92,K.d0,K.d1,M_white);
+  B(K.x0-0.02,K.x1+0.03,0.92,0.95,K.d0-0.02,K.d1,M_top);
+  B(K.x1+0.001,K.x1+0.01,0.80,0.83,K.d0,K.d1,M_red,false);        // red strip, customer side
+  for(let r=0;r<3;r++) for(let c=0;c<5;c++){                         // drawers on staff side
+    const d0=K.d0+0.04+c*0.55, y0=0.13+r*0.26;
+    B(K.x0-0.012,K.x0,y0,y0+0.24,d0,d0+0.53,std(0xf7f7f5,0.5),false);
+    B(K.x0-0.03,K.x0-0.012,y0+0.18,y0+0.195,d0+0.19,d0+0.34,M_handle,false);
+  }
+
+  // ---- RIGHT STAND: closed storage below, open shelves above ----
+  const R=L.standR;
+  B(R.x0+0.03,R.x1,0,0.08,R.d0,R.d1,M_dark);
+  B(R.x0,R.x1,0.08,R.hLow-0.03,R.d0,R.d1,M_white);
+  B(R.x0-0.02,R.x1,R.hLow-0.03,R.hLow,R.d0,R.d1,M_top);
+  for(let i=0;i<5;i++){const d0=R.d0+i*0.56;
+    B(R.x0-0.008,R.x0,0.10,R.hLow-0.05,d0+0.006,d0+0.554,std(0xf7f7f5,0.5),false);
+    B(R.x0-0.028,R.x0-0.008,0.62,0.78,d0+0.50,d0+0.515,M_handle,false);}
+  B(R.x1-0.02,R.x1,R.hLow,R.h,R.d0,R.d1,M_white);
+  [R.d0,1.53,2.47,R.d1].forEach(d=>B(R.shelfX0,R.x1,R.hLow,R.h,d-0.009,d+0.009,M_white));
+  B(R.shelfX0,R.x1,R.h-0.02,R.h,R.d0,R.d1,M_white);
+  const levelsR=[R.hLow,1.23,1.56,1.89];
+  levelsR.forEach((y,i)=>{
+    if(i>0) B(R.shelfX0,R.x1,y,y+0.02,R.d0,R.d1,M_white);
+    B(R.shelfX0+0.01,R.shelfX0+0.03,y+0.30,y+0.31,R.d0,R.d1,M_led,false);
+    [[R.d0,1.53],[1.53,2.47],[2.47,R.d1]].forEach(([a,b])=>fillAlongD(3.43,3.68,a+0.01,b-0.01,y+0.02,0.31));
+  });
+
+  // ---- MAIN COUNTER ----
+  const C=L.cash, P=L.repair;
+  B(C.x0+0.02,C.x1,0,0.08,C.d0+0.03,C.d1,M_dark);
+  B(C.x0,C.x1,0.08,C.h-0.03,C.d0,C.d1,M_white);
+  B(C.x0-0.02,C.x1,C.h-0.03,C.h,C.d0-0.03,C.d1,M_top);
+  B(C.x0,C.x1,0.30,0.31,C.d0-0.001,C.d0+0.002,M_red,false);
+  // cash register + monitor
+  B(1.55,1.95,C.h,C.h+0.02,3.70,3.95,M_dark);
+  const mon=B(1.60,2.05,C.h+0.10,C.h+0.40,3.80,3.83,M_dark); B(1.80,1.85,C.h,C.h+0.10,3.82,3.86,M_dark);
+  B(2.15,2.35,C.h,C.h+0.08,3.55,3.75,std(0x2b2f33,0.4));
+  // repair: desk at 0.80, high front 1.60
+  B(P.x0,P.x1,0,P.top-0.03,P.d0+0.05,P.d1-0.45,M_white);
+  B(P.x0,P.x1,P.top-0.03,P.top,P.d0+0.05,P.d1,M_top);
+  B(P.x0,P.x1,0,P.panel,P.d0,P.d0+0.05,M_white);
+  B(P.x0,P.x1,P.panel-0.03,P.panel,P.d0-0.02,P.d0+0.12,M_top);
+  B(P.x0,P.x1,0.30,0.31,P.d0-0.001,P.d0+0.002,M_red,false);
+  B(P.x0+0.05,P.x1-0.05,P.top,P.top+0.005,3.55,3.95,std(0x2c6fb0,0.8),false); // ESD mat
+  // microscope
+  B(3.00,3.20,P.top,P.top+0.03,3.65,3.85,M_dark);
+  const col=new THREE.Mesh(new THREE.CylinderGeometry(0.018,0.018,0.38,12),M_steel); col.position.set(3.10,P.top+0.2,-3.82); scene.add(col);
+  const head=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.14,16),std(0xf0f0f0,0.3)); head.position.set(3.10,P.top+0.32,-3.72); head.rotation.x=0.6; scene.add(head);
+  B(2.62,2.88,P.top,P.top+0.14,3.60,3.85,std(0xe7e7e7,0.4));   // separator / station
+  // stools
+  [[1.75,4.45],[3.10,4.45]].forEach(([x,d])=>{
+    const seat=new THREE.Mesh(new THREE.CylinderGeometry(0.19,0.19,0.06,24),M_dark); seat.position.set(x,0.62,-d); seat.castShadow=true; scene.add(seat);
+    const leg=new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,0.6,10),M_steel); leg.position.set(x,0.31,-d); scene.add(leg);
+    const base=new THREE.Mesh(new THREE.CylinderGeometry(0.2,0.2,0.02,24),M_steel); base.position.set(x,0.01,-d); scene.add(base);
+  });
+  // back wall shelves (optional)
+  const BS=L.backShelf;
+  [BS.y0,1.60,1.90].forEach(y=>{B(BS.x0,BS.x1,y,y+0.02,BS.d0,BS.d1,M_white);fillAlongX(BS.x0,BS.x1,BS.d0,BS.d1,y+0.02,0.28,y<1.5);
+    B(BS.x0,BS.x1,y-0.015,y-0.005,BS.d0+0.01,BS.d0+0.03,M_led,false);});
+  B(BS.x0,BS.x1,BS.y1-0.02,BS.y1,BS.d0,BS.d1,M_white);
+  [BS.x0,2.40,BS.x1].forEach(x=>B(x-0.009,x+0.009,BS.y0,BS.y1,BS.d0,BS.d1,M_white));
+  // pipe
+  const pipe=new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,0.30,12),M_steel); pipe.rotation.x=Math.PI/2; pipe.position.set(L.pipe.x,0.18,-(D-0.15)); scene.add(pipe);
+
+  // instanced product boxes
+  const geo=new THREE.BoxGeometry(1,1,1);
+  const inst=new THREE.InstancedMesh(geo,new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.55}),items.length);
+  const m4=new THREE.Matrix4(), q=new THREE.Quaternion(), col3=new THREE.Color();
+  items.forEach((it,i)=>{const [x0,x1,y0,y1,d0,d1,c]=it;
+    m4.compose(new THREE.Vector3((x0+x1)/2,(y0+y1)/2,-(d0+d1)/2),q,new THREE.Vector3(x1-x0,y1-y0,d1-d0));
+    inst.setMatrixAt(i,m4); inst.setColorAt(i,col3.set(c));});
+  inst.castShadow=true; inst.receiveShadow=true; scene.add(inst);
+
+  // track lights
+  [1.30,3.00].forEach(d=>{
+    B(0.3,W-0.3,H-0.04,H,d-0.02,d+0.02,M_dark,false);
+    [0.8,1.6,2.4,3.1].forEach(x=>{
+      const sp=new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.035,0.14,14),M_dark); sp.position.set(x,H-0.12,-d); sp.rotation.x=0.35; scene.add(sp);
+    });
+  });
+  scene.add(new THREE.HemisphereLight(0xffffff,0x8a8f96,0.55));
+  scene.add(new THREE.AmbientLight(0xffffff,0.18));
+  const spots=[[0.9,1.3,0.3,1.4],[2.4,1.3,2.8,1.9],[1.1,3.0,0.4,3.4],[2.9,3.0,3.3,2.7],[2.0,3.0,2.2,3.9]];
+  spots.forEach(([x,d,tx,td],i)=>{
+    const s=new THREE.SpotLight(0xfff0dd,1.15,9,Math.PI/4.2,0.55,1.2);
+    s.position.set(x,H-0.15,-d); s.target.position.set(tx,0.9,-td); scene.add(s); scene.add(s.target);
+    if(i<3){s.castShadow=true; s.shadow.mapSize.set(1024,1024); s.shadow.bias=-0.0008;}
+  });
+  const sun=new THREE.DirectionalLight(0xffffff,0.25); sun.position.set(W/2,2,4); sun.target.position.set(W/2,0,-3); scene.add(sun); scene.add(sun.target);
+
+  /* ---------- camera control ---------- */
+  const target=new THREE.Vector3(); let sph={r:5,th:0,ph:1.2};
+  function fromCam(){const o=camera.position.clone().sub(target);sph.r=o.length();sph.th=Math.atan2(o.x,o.z);sph.ph=Math.acos(Math.min(1,Math.max(-1,o.y/sph.r)));}
+  function apply(){const {r,th,ph}=sph;camera.position.set(target.x+r*Math.sin(ph)*Math.sin(th),target.y+r*Math.cos(ph),target.z+r*Math.sin(ph)*Math.cos(th));camera.lookAt(target);render();}
+  const views=[
+    {n:'Մուտքից',p:[1.95,1.60,-0.25],t:[1.95,1.05,-4.6],f:62},
+    {n:'Աջ անկյունից',p:[3.05,1.75,-0.30],t:[0.9,1.0,-3.6],f:62},
+    {n:'Ձախ անկյունից',p:[1.75,1.70,-0.30],t:[3.4,1.0,-3.9],f:62},
+    {n:'Ձախ անցումից',p:[0.75,1.60,-0.45],t:[0.75,1.0,-5],f:66},
+    {n:'Սեղանի հետևից',p:[0.80,1.62,-4.85],t:[2.4,1.0,-0.6],f:64},
+    {n:'Վարպետի տեղը',p:[2.2,1.45,-2.3],t:[3.1,1.0,-3.8],f:55},
+    {n:'Վերևից',p:[W/2,9.5,-D/2+0.01],t:[W/2,0,-D/2],f:38},
+    {n:'Կտրվածք',p:[6.2,5.8,3.2],t:[W/2,0.8,-D/2],f:40}
+  ];
+  const vb=document.getElementById('views');
+  function setView(i){const v=views[i];camera.fov=v.f;camera.updateProjectionMatrix();camera.position.set(...v.p);target.set(...v.t);fromCam();apply();
+    [...vb.children].forEach((b,j)=>b.setAttribute('aria-pressed',j===i));}
+  views.forEach((v,i)=>{const b=document.createElement('button');b.type='button';b.textContent=v.n;b.onclick=()=>setView(i);vb.appendChild(b);});
+
+  const cvs=renderer.domElement; const ptrs=new Map(); let pinch=0;
+  cvs.addEventListener('pointerdown',e=>{cvs.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,[e.clientX,e.clientY]);cvs.style.cursor='grabbing';});
+  cvs.addEventListener('pointermove',e=>{if(!ptrs.has(e.pointerId))return;const [px,py]=ptrs.get(e.pointerId);ptrs.set(e.pointerId,[e.clientX,e.clientY]);
+    if(ptrs.size===1){sph.th-=(e.clientX-px)*0.005;sph.ph=Math.min(3.1,Math.max(0.05,sph.ph-(e.clientY-py)*0.005));apply();}
+    else if(ptrs.size===2){const a=[...ptrs.values()];const dd=Math.hypot(a[0][0]-a[1][0],a[0][1]-a[1][1]);if(pinch){sph.r=Math.min(14,Math.max(0.3,sph.r*pinch/dd));apply();}pinch=dd;}});
+  const up=e=>{ptrs.delete(e.pointerId);pinch=0;cvs.style.cursor='grab';};
+  cvs.addEventListener('pointerup',up);cvs.addEventListener('pointercancel',up);
+  cvs.addEventListener('wheel',e=>{e.preventDefault();sph.r=Math.min(14,Math.max(0.3,sph.r*(1+Math.sign(e.deltaY)*0.08)));apply();},{passive:false});
+
+  function resize(){const w=host.clientWidth,h=host.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();render();}
+  function render(){renderer.render(scene,camera);}
+  new ResizeObserver(resize).observe(host);
+  setView(0); resize();
+})();
+</script>
+</body>
+</html>
